@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en-US" ng-app="birchApp" >
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular-route.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular-resource.js"></script>
+<script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+<link rel="stylesheet" type="text/css" href="birch.css">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<body>
+	<div class="container">
+		<nav class="navbar navbar-default navbar-fixed-top navbar-inverse" role="navigation">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"> <span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button> <a class="navbar-brand" href="#">Birch</a>
+			</div>
+		</nav>
+	</div>
+
+	<div class="container-fluid">
+		<div class="row">
+			<!-- Sidebar -->
+			<div class="col-sm-3 col-md-2 sidebar" ng-controller="sidebarController">
+				<h2>Bots</h2>
+				<div class="list-group">
+					<a href="#bot/{{b.uuid}}" class="list-group-item" ng-repeat="b in status.bots">
+						<p class="list-group-item-text">{{b.nick + "@" + b.server}}</p>
+					</a>
+				</div>
+				<button type="button" class="btn btn-default btn-sm glyphicon glyphicon-refresh" ng-click="status.load()"></button>
+			</div>
+
+			<!-- Main -->
+			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" id="main">
+				<div class="row" ng-view></div>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript" src="birch.js"></script>
+</body>
+</html>

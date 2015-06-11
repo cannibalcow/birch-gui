@@ -1,0 +1,19 @@
+{
+  "name": "birch-gui",
+  "version": "0.0.0",
+  "homepage": "https://github.com/cannibalcow/birch-gui",
+  "authors": [
+    "Daniel Heldt <danielheldtsmail@gmail.com>"
+  ],
+  "description": "simple gui",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+  }
+}
