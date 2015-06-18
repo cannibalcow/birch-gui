@@ -33,7 +33,7 @@ app.controller('startController', function($scope) {
 	$scope.message = 'start';
 });
 
-app.controller('botInfoController', ['$scope', '$routeParams', 'StatusService', '$http', function($scope, $routeParams, StatusService, $http) {
+app.controller('botInfoController', ['$scope', '$routeParams', 'StatusService', '$http', '$location', function($scope, $routeParams, StatusService, $http, $location) {
 	$scope.message = 'botinfo';
 	$scope.uuid = $routeParams.uuid;
 	$scope.bot = null;
@@ -58,12 +58,18 @@ app.controller('botInfoController', ['$scope', '$routeParams', 'StatusService', 
 		url = birchcfg.birchUrl + "join/"+$scope.bot.uuid+"/";
 		channel = $scope.channel;
 		password = $scope.password != '' ? "/" + $scope.password : "";
-		console.log(url + channel + password);
 		$http.get(url + channel + password);
+	};
+
+	$scope.disconnect = function() {
+		url = birchcfg.birchUrl + "disconnect/" + $scope.bot.uuid;
+		$http.get(url);
+		alert("bot disconnect");
+		$location.path("/");	
 	}
 }]);
 
-app.controller('connectController', ['$scope', '$location', '$http', function($scope, $location, $http) {
+app.controller('connectController', ['$scope', '$location', '$http', '$route', function($scope, $location, $http, $route) {
 	$scope.server = "";
 	$scope.port = 6669;
 	$scope.nick = "";
@@ -72,7 +78,7 @@ app.controller('connectController', ['$scope', '$location', '$http', function($s
 	$scope.submit = function() {
 		$http.get(birchcfg.birchUrl + "connect/" + $scope.nick + "/" + $scope.server)
 		.success(function(data, status, headers, config) {
-			alert(data + " -> " + status)
+			$route.reload();
 			$location.path("/");
 		})
 		.error(function(data, status, headers, config) {
@@ -91,5 +97,6 @@ app.controller('sidebarController', ['$scope', '$http', 'StatusService', functio
 	};
 
 	$scope.status.load();
+
 }]);
 
