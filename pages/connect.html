@@ -1,1 +1,34 @@
-<h1>{{message}} connect</h1>
+<div class="page-header">
+	<h1>Connect new bot </h1>
+</div>
+<form class="form-horizontal" ng-controller="connectController" ng-submit="submit()">
+	<div class="form-group">
+		<label for="server" class="col-sm-2 control-label">Server</label>
+		<div class="col-sm-3">
+			<input required ng-model="server" class="form-control" type="text" id="server" placeholder="irc server address"></input>
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label for="port" class="col-sm-2 control-label">Port</label>
+		<div class="col-sm-2">
+			<input required ng-model="port" class="form-control" id="port" type="number" value="6669" placeholder="port"></input>
+		</div> 
+	</div>
+
+	<div class="form-group">
+		<label for="nick" class="col-sm-2 control-label">Nick</label>
+		<div class="col-sm-2">
+			<input required ng-model="nick" class="form-control" id="nick" type="text" placeholder="nick"></input>
+		</div> 
+	</div>
+	<div class="form-group">
+		<div class="col-sm-5 text-right">
+			<button type="submit" class="btn btn-default">Connect</button>
+		</div>
+	</div>
+</form>
+
+<div class="row">
+	<div class="col-sm-4"> {{ message }} </div>
+</div>

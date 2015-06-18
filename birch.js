@@ -1,5 +1,6 @@
 var app = angular.module('birchApp', ['ngRoute', 'ngResource']);
 
+
 app.config(function($routeProvider) {
 	$routeProvider
 	.when("/", {
@@ -15,11 +16,17 @@ app.config(function($routeProvider) {
 	.when("/connect", {
 		templateUrl: 'pages/connect.html',
 		controller: 'connectController'
+	})
+
+	.otherwise({
+		redirectTo: '/'
 	});
+
+
 });
 
 app.factory('StatusService', function($resource) {
-	return $resource('http://localhost:8080/status')
+	return $resource(birchcfg.birchUrl + 'status')
 });
 
 app.controller('startController', function($scope) {
@@ -31,17 +38,14 @@ app.controller('botInfoController', ['$scope', '$routeParams', 'StatusService', 
 	$scope.uuid = $routeParams.uuid;
 	$scope.bot = null;
 
-	$scope.channel ="";
+	$scope.channel = "";
 	$scope.password = "";
 	
 	load = function() { 
 		StatusService.query(function(resources) {
 			angular.forEach(resources, function(resource) {
-				console.log(resource.uuid);
-				console.log(resource.uuid == $scope.uuid);
 				if(resource.uuid == $scope.uuid) {
 					$scope.bot = resource;
-					console.log(resource);
 					return;
 				}
 			});
@@ -51,17 +55,31 @@ app.controller('botInfoController', ['$scope', '$routeParams', 'StatusService', 
 	load();
 	
 	$scope.join = function() {
-		_url = "http://localhost:8080/join/"+$scope.bot.uuid+"/";
-		_c = $scope.channel;
-		_p = $scope.password != '' ? "/" + $scope.password : "";
-		console.log(_url + _c + _p);
-		$http.get(_url + _c + _p);
+		url = birchcfg.birchUrl + "join/"+$scope.bot.uuid+"/";
+		channel = $scope.channel;
+		password = $scope.password != '' ? "/" + $scope.password : "";
+		console.log(url + channel + password);
+		$http.get(url + channel + password);
 	}
 }]);
 
-app.controller('connectController', function($scope) {
-	$scope.message = 'conect';
-});
+app.controller('connectController', ['$scope', '$location', '$http', function($scope, $location, $http) {
+	$scope.server = "";
+	$scope.port = 6669;
+	$scope.nick = "";
+	$scope.message = "";
+
+	$scope.submit = function() {
+		$http.get(birchcfg.birchUrl + "connect/" + $scope.nick + "/" + $scope.server)
+		.success(function(data, status, headers, config) {
+			alert(data + " -> " + status)
+			$location.path("/");
+		})
+		.error(function(data, status, headers, config) {
+			$scope.message = "nope";
+		});
+	};
+}]);
 
 app.controller('sidebarController', ['$scope', '$http', 'StatusService', function($scope, $http, StatusService) {
 
